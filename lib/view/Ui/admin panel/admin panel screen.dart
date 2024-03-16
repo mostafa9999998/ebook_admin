@@ -1,4 +1,5 @@
 import 'package:ebook_admin/pakages/vertical%20tab%20view.dart';
+import 'package:ebook_admin/view/Ui/admin%20panel/active%20users/user%20list.dart';
 import 'package:ebook_admin/view/Ui/admin%20panel/add%20wedget/add%20wedget.dart';
 import 'package:ebook_admin/view/Ui/admin%20panel/delete%20wedget/e%20book%20listd/the%20books%20list%20d.dart';
 import 'package:ebook_admin/view/Ui/admin%20panel/uodate%20wedget/e%20book%20list/the%20books.dart';
@@ -27,6 +28,7 @@ class AdminPanelScreen extends StatelessWidget {
                     AddBook(),
                     BooksListUpdate(),
                     BooksListDelete(),
+                    ActivUserList()
                   ],
                 ),
               ),

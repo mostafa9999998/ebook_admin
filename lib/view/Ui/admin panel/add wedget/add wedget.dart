@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'dart:typed_data';
 import 'package:ebook_admin/view%20model/providers/add%20provider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 
 class AddBook extends StatefulWidget {
@@ -69,9 +66,9 @@ class _AddBookState extends State<AddBook> {
                                 borderRadius: BorderRadius.circular(15)),
                             hintText: 'name'),
                         controller: namecontroller,
-                        validator: (value) {
-                          if (value == null) {
-                            return 'title cant be empty';
+                        validator:(value) {
+                          if (value!.isEmpty || value.trim().isEmpty) {
+                            return "title can't be empty";
                           }
                         },
                       ),
@@ -102,8 +99,8 @@ class _AddBookState extends State<AddBook> {
                               hintText: 'Ex : history'),
                           controller: categorycontroller,
                           validator: (value) {
-                            if (value == null) {
-                              return 'category cant be empty';
+                            if (value!.isEmpty || value.trim().isEmpty) {
+                              return "category can't be empty";
                             }
                           }),
                     )
@@ -133,8 +130,8 @@ class _AddBookState extends State<AddBook> {
                               hintText: 'Author'),
                           controller: authorcontroller,
                           validator: (value) {
-                            if (value == null) {
-                              return 'author name cant be empty';
+                            if (value!.isEmpty || value.trim().isEmpty) {
+                              return "Author name can't be empty";
                             }
                           }),
                     ),
@@ -149,9 +146,7 @@ class _AddBookState extends State<AddBook> {
                     height: MediaQuery.of(context).size.height * .065,
                     child: ElevatedButton(
                       onPressed: () async {
-                        // _imageFile = await pickImage();
-                        // uploadImage(_imageFile!);
-                        _pickImageFile();
+                        _imageFile = await provider.pickImageFile();
                       },
                       child: Text('Select Image'),
                     ),
@@ -165,8 +160,8 @@ class _AddBookState extends State<AddBook> {
                     width: MediaQuery.of(context).size.width * .3,
                     height: MediaQuery.of(context).size.height * .065,
                     child: ElevatedButton(
-                      onPressed: () {
-                        pickPdfFile();
+                      onPressed: () async{
+                        _pdfFile = await provider.pickPdfFile();
                       },
                       child: Text('Pick pdh'),
                     ),
@@ -184,6 +179,7 @@ class _AddBookState extends State<AddBook> {
                           backgroundColor: Colors.blue),
                       onPressed: () {
                         provider.addbook(
+                            context,
                             formKey,
                             namecontroller.text,
                             authorcontroller.text,
@@ -206,23 +202,8 @@ class _AddBookState extends State<AddBook> {
     );
   }
 
-  Future<void> _pickImageFile() async {
-    final image = await ImagePickerWeb.getImageAsBytes();
 
-    if (image != null) {
-      setState(() {
-        _imageFile = image;
-      });
-    }
-  }
 
-  Future<void> pickPdfFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      setState(() {
-        _pdfFile = result.files.first.bytes;
-      });
-    }
-  }
+
 }

@@ -12,7 +12,7 @@ class BooksListUpdate extends StatelessWidget {
     return Column(
           children: [
             Text(
-              'e-book List',
+              'update book List',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
             ),
             SizedBox(

@@ -1,6 +1,7 @@
 import 'package:ebook_admin/fire%20base/Firebase%20Utiles/fire%20Utils.dart';
 import 'package:ebook_admin/fire%20base/modules/Book.dart';
 import 'package:ebook_admin/view/Ui/admin%20panel/uodate%20wedget/update/update%20wedget.dart';
+import 'package:ebook_admin/view/Utils/alert%20dialogs.dart';
 import 'package:flutter/material.dart';
 
 class BookStyled extends StatelessWidget {
@@ -10,7 +11,8 @@ class BookStyled extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        FirebaseUtils.deletebook(book.id!);
+        showLoading(context);
+        FirebaseUtils.deletebook(context,book.id!);
       },
       child: Container(
         padding: EdgeInsets.all(10),

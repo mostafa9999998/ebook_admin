@@ -1,9 +1,6 @@
 import 'dart:typed_data';
-
 import 'package:ebook_admin/view%20model/providers/update%20provider.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:provider/provider.dart';
 import '../../../../../fire base/modules/Book.dart';
 
@@ -73,9 +70,14 @@ class _UpdateScreenState extends State<UpdateScreen> {
                           decoration: InputDecoration(
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15)),
-                              hintText: 'name'
+                              hintText: 'title'
                           ),
                           controller: namecontroller,
+                          validator: (value) {
+                            if (value!.isEmpty || value.trim().isEmpty) {
+                              return "title can't be empty";
+                            }
+                          },
                         ),
                       )
                     ],
@@ -105,6 +107,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
                               hintText: 'Ex : history'
                           ),
                           controller: categorycontroller,
+                          validator: (value) {
+                            if (value!.isEmpty || value.trim().isEmpty) {
+                              return "category can't be empty";
+                            }
+                          },
                         ),
                       )
                     ],
@@ -134,6 +141,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
                               hintText: 'Author'
                           ),
                           controller: authorcontroller,
+                          validator: (value) {
+                            if (value!.isEmpty || value.trim().isEmpty) {
+                              return "Author name can't be empty";
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -145,10 +157,16 @@ class _UpdateScreenState extends State<UpdateScreen> {
                     children: [
                       Container(
                           height: 100,
-                          width: 80,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width * .2,
                           child: Image.network(widget.book.imageUrl!)),
                       SizedBox(
-                        width: 50,
+                        width:MediaQuery
+                            .of(context)
+                            .size
+                            .width * .1,
                       ),
                       Container(
                         width: MediaQuery
@@ -161,7 +179,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                             .height * .065,
                         child: ElevatedButton(
                           onPressed: () async {
-                            _pickImageFile();
+                            provider.pickImageFile(_imageFile);
                           },
                           child: Text('Select another Image'),
                         ),
@@ -183,9 +201,9 @@ class _UpdateScreenState extends State<UpdateScreen> {
                           .height * .065,
                       child: ElevatedButton(
                         onPressed: () {
-                          pickPdfFile();
+                          provider.pickPdfFile(_pdfFile);
                         },
-                        child: Text('Pick another pdh'),
+                        child: Text('Pick another  pdh'),
                       ),
                     ),
                   ),
@@ -205,7 +223,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
                         onPressed: () {
-                          provider.updatebook(formKey, widget.book.id!, namecontroller.text, authorcontroller.text, categorycontroller.text, _pdfFile, _imageFile);
+                          provider.updatebook(context,formKey, widget.book.id!, namecontroller.text, authorcontroller.text, categorycontroller.text, _pdfFile, _imageFile);
                         },
                         child: Text('Updat book .',style: TextStyle(color: Colors.white),),
                       ),
@@ -221,23 +239,5 @@ class _UpdateScreenState extends State<UpdateScreen> {
     );
   }
 
-  Future<void> _pickImageFile() async {
-    final image = await ImagePickerWeb.getImageAsBytes();
 
-    if (image != null) {
-      setState(() {
-        _imageFile = image;
-      });
-    }
-  }
-
-  Future<void> pickPdfFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
-      setState(() {
-        _pdfFile = result.files.first.bytes;
-      });
-    }
-  }
 }
